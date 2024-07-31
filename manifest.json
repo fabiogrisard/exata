@@ -1,7 +1,7 @@
 {
   "name": "Exata Construções",
   "short_name": "Exata",
-  "start_url": "https://fabiogrisard.github.io/exata/",
+  "start_url": "/exata/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
