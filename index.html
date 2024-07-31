@@ -3,18 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exata Construções</title>
-    <link rel="manifest" href="manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-            .then(function() { console.log('Service Worker Registered'); });
-        }
-    </script>
+    <title>Login - Exata Construções</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffffff;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
             display: flex;
@@ -25,43 +18,122 @@
         .container {
             background-color: #fff;
             border: 2px solid #4b0082; /* Borda roxa */
-            border-radius: 20px;
+            border-radius: 10px;
             padding: 20px;
             text-align: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 95%;
-            max-width: 738px;
-            height: 95%;
-            max-height: 1600px;
+            width: 90%;
+            max-width: 400px;
         }
         .logo {
-            width: 250px;
+            width: 200px;
             margin-bottom: 20px;
+        }
+        .input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         .button {
             display: block;
-            width: 80%;
-            max-width: 300px;
+            width: 100%;
             padding: 15px;
-            margin: 20px auto;
+            margin: 10px 0;
             font-size: 18px;
             color: #fff;
-            background-color: #007bff; /* Azul */
+            background-color: #0000ff; /* Azul */
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
         }
         .button:hover {
-            background-color: #0056b3; /* Azul escuro */
+            background-color: #00008b; /* Azul escuro */
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <a href="#" class="button">Incluir Custo</a>
-        <a href="#" class="button">Diário de Obra</a>
+        <form id="loginForm">
+            <input type="text" id="username" class="input" placeholder="Usuário" required>
+            <input type="password" id="password" class="input" placeholder="Senha" required>
+            <div class="checkbox-container">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Salvar senha</label>
+            </div>
+            <button type="submit" class="button">Login</button>
+        </form>
+        <button id="fingerprintLogin" class="button">Login com Impressão Digital</button>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+    <script>
+        const correctUsername = 'fabiogrisard';
+        const correctPassword = '32836058';
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === correctUsername && password === correctPassword) {
+                alert('Login realizado com sucesso!');
+                // Redirecionar para a página principal ou realizar outras ações após o login bem-sucedido
+            } else {
+                alert('Usuário ou senha incorretos.');
+            }
+        });
+
+        document.getElementById('fingerprintLogin').addEventListener('click', function() {
+            FingerprintJS.load().then(fp => fp.get()).then(result => {
+                const visitorId = result.visitorId;
+                // Aqui você pode adicionar a lógica para autenticar o usuário com base no ID do visitante
+                if (visitorId === 'seu_visitor_id_esperado') { // Substitua pelo ID do visitante esperado
+                    alert('Autenticação por impressão digital bem-sucedida!');
+                    // Redirecionar para a página principal ou realizar outras ações após a autenticação bem-sucedida
+                } else {
+                    alert('Falha na autenticação por impressão digital.');
+                }
+            }).catch(error => {
+                alert('Falha na autenticação por impressão digital.');
+                console.error(error);
+            });
+        });
+
+        // Salvar e recuperar as credenciais
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const rememberMeCheckbox = document.getElementById('rememberMe');
+
+        // Carregar credenciais salvas
+        if (localStorage.getItem('rememberMe') === 'true') {
+            usernameInput.value = localStorage.getItem('username');
+            passwordInput.value = localStorage.getItem('password');
+            rememberMeCheckbox.checked = true;
+        }
+
+        // Salvar credenciais ao enviar o formulário
+        document.getElementById('loginForm').addEventListener('submit', function() {
+            if (rememberMeCheckbox.checked) {
+                localStorage.setItem('username', usernameInput.value);
+                localStorage.setItem('password', passwordInput.value);
+                localStorage.setItem('rememberMe', true);
+            } else {
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+                localStorage.removeItem('rememberMe');
+            }
+        });
+    </script>
 </body>
 </html>
