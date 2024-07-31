@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incluir Custo - Exata Construções</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border: 2px solid #4b0082; /* Borda roxa */
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+        .logo {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        .input, .select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 18px;
+            color: #fff;
+            background-color: #0000ff; /* Azul */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        .button:hover {
+            background-color: #00008b; /* Azul escuro */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
+        <form id="costForm">
+            <select id="obra" class="select" required>
+                <option value="" disabled selected>Selecione a Obra</option>
+                <option value="jader">Jader</option>
+            </select>
+            <input type="text" id="fornecedor" class="input" placeholder="Fornecedor" required>
+            <input type="text" id="item" class="input" placeholder="Item" required>
+            <input type="number" id="valor" class="input" placeholder="Valor" required>
+            <button type="submit" class="button">Enviar</button>
+        </form>
+    </div>
+
+    <script src="incluir-custo.js"></script>
+</body>
+</html>
