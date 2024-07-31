@@ -70,6 +70,7 @@
             <button type="submit" class="button">Login</button>
         </form>
         <button id="fingerprintLogin" class="button">Login com Impressão Digital</button>
+        <button id="registerFingerprint" class="button">Registrar Impressão Digital</button>
     </div>
 
     <div class="container hidden" id="mainContainer">
@@ -110,6 +111,16 @@
                     mainContainer.classList.remove('hidden');
                 } else {
                     alert('Falha na autenticação por impressão digital.');
+                }
+            });
+        });
+
+        document.getElementById('registerFingerprint').addEventListener('click', function() {
+            registerFingerprint().then(success => {
+                if (success) {
+                    alert('Registro de impressão digital bem-sucedido!');
+                } else {
+                    alert('Falha no registro de impressão digital.');
                 }
             });
         });
