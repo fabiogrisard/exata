@@ -69,17 +69,17 @@
             <input type="password" id="password" class="input" placeholder="Senha" required>
             <button type="submit" class="button">Login</button>
         </form>
-        <button id="fingerprintLogin" class="button">Login com Impressão Digital</button>
-        <button id="registerFingerprint" class="button">Registrar Impressão Digital</button>
     </div>
 
     <div class="container hidden" id="mainContainer">
         <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
         <a href="#" class="button">Incluir Custo</a>
         <a href="#" class="button">Diário de Obra</a>
+        <a href="#" class="button">Acompanhe a Obra</a>
+        <a href="#" class="button">Pagamentos</a>
+        <a href="#" class="button">Previsão do Tempo</a>
     </div>
 
-    <script src="auth.js"></script>
     <script>
         const correctUsername = 'fabiogrisard';
         const correctPassword = '32836058';
@@ -100,29 +100,6 @@
             } else {
                 alert('Usuário ou senha incorretos.');
             }
-        });
-
-        document.getElementById('fingerprintLogin').addEventListener('click', function() {
-            authenticateWithFingerprint().then(success => {
-                if (success) {
-                    alert('Autenticação por impressão digital bem-sucedida!');
-                    // Mostrar a página principal
-                    loginContainer.classList.add('hidden');
-                    mainContainer.classList.remove('hidden');
-                } else {
-                    alert('Falha na autenticação por impressão digital.');
-                }
-            });
-        });
-
-        document.getElementById('registerFingerprint').addEventListener('click', function() {
-            registerFingerprint().then(success => {
-                if (success) {
-                    alert('Registro de impressão digital bem-sucedido!');
-                } else {
-                    alert('Falha no registro de impressão digital.');
-                }
-            });
         });
 
         // Salvar e recuperar o nome de usuário
