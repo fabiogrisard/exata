@@ -89,6 +89,7 @@
             if (username === correctUsername && password === correctPassword) {
                 alert('Login realizado com sucesso!');
                 // Redirecionar para a página principal ou realizar outras ações após o login bem-sucedido
+                window.location.href = "/exata/home.html"; // Substitua pelo caminho da sua página principal
             } else {
                 alert('Usuário ou senha incorretos.');
             }
@@ -98,9 +99,10 @@
             FingerprintJS.load().then(fp => fp.get()).then(result => {
                 const visitorId = result.visitorId;
                 // Aqui você pode adicionar a lógica para autenticar o usuário com base no ID do visitante
-                if (visitorId === 'seu_visitor_id_esperado') { // Substitua pelo ID do visitante esperado
+                if (visitorId === 'esperado_visitor_id') { // Substitua pelo ID do visitante esperado
                     alert('Autenticação por impressão digital bem-sucedida!');
                     // Redirecionar para a página principal ou realizar outras ações após a autenticação bem-sucedida
+                    window.location.href = "/exata/home.html"; // Substitua pelo caminho da sua página principal
                 } else {
                     alert('Falha na autenticação por impressão digital.');
                 }
