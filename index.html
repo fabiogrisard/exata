@@ -53,12 +53,6 @@
         .button:hover {
             background-color: #00008b; /* Azul escuro */
         }
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px 0;
-        }
     </style>
 </head>
 <body>
@@ -67,10 +61,6 @@
         <form id="loginForm">
             <input type="text" id="username" class="input" placeholder="Usuário" required>
             <input type="password" id="password" class="input" placeholder="Senha" required>
-            <div class="checkbox-container">
-                <input type="checkbox" id="rememberMe">
-                <label for="rememberMe">Salvar senha</label>
-            </div>
             <button type="submit" class="button">Login</button>
         </form>
         <button id="fingerprintLogin" class="button">Login com Impressão Digital</button>
@@ -89,7 +79,7 @@
             if (username === correctUsername && password === correctPassword) {
                 alert('Login realizado com sucesso!');
                 // Redirecionar para a página principal ou realizar outras ações após o login bem-sucedido
-                window.location.href = "/exata/home.html"; // Substitua pelo caminho da sua página principal
+                window.location.href = "/exata/index.html"; // Redireciona para index.html
             } else {
                 alert('Usuário ou senha incorretos.');
             }
@@ -102,7 +92,7 @@
                 if (visitorId === 'esperado_visitor_id') { // Substitua pelo ID do visitante esperado
                     alert('Autenticação por impressão digital bem-sucedida!');
                     // Redirecionar para a página principal ou realizar outras ações após a autenticação bem-sucedida
-                    window.location.href = "/exata/home.html"; // Substitua pelo caminho da sua página principal
+                    window.location.href = "/exata/index.html"; // Redireciona para index.html
                 } else {
                     alert('Falha na autenticação por impressão digital.');
                 }
@@ -112,29 +102,17 @@
             });
         });
 
-        // Salvar e recuperar as credenciais
+        // Salvar e recuperar o nome de usuário
         const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const rememberMeCheckbox = document.getElementById('rememberMe');
 
-        // Carregar credenciais salvas
-        if (localStorage.getItem('rememberMe') === 'true') {
+        // Carregar o nome de usuário salvo
+        if (localStorage.getItem('username')) {
             usernameInput.value = localStorage.getItem('username');
-            passwordInput.value = localStorage.getItem('password');
-            rememberMeCheckbox.checked = true;
         }
 
-        // Salvar credenciais ao enviar o formulário
+        // Salvar o nome de usuário ao enviar o formulário
         document.getElementById('loginForm').addEventListener('submit', function() {
-            if (rememberMeCheckbox.checked) {
-                localStorage.setItem('username', usernameInput.value);
-                localStorage.setItem('password', passwordInput.value);
-                localStorage.setItem('rememberMe', true);
-            } else {
-                localStorage.removeItem('username');
-                localStorage.removeItem('password');
-                localStorage.removeItem('rememberMe');
-            }
+            localStorage.setItem('username', usernameInput.value);
         });
     </script>
 </body>
