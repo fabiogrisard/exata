@@ -5,8 +5,8 @@ self.addEventListener('install', function(event) {
                 '/exata/',
                 '/exata/index.html',
                 '/exata/manifest.json',
-                'https://raw.githubusercontent.com/fabiogrisard/exata/main/icon-192x192.png',
-                'https://raw.githubusercontent.com/fabiogrisard/exata/main/icon-512x512.png'
+                'https://fabiogrisard.github.io/exata/icon-192x192.png',
+                'https://fabiogrisard.github.io/exata/icon-512x512.png'
                 // Adicione outros arquivos que você deseja armazenar em cache
             ]);
         })
