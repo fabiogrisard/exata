@@ -14,24 +14,29 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
+        }
+        .container {
+            background-color: #fff;
+            border: 2px solid #4b0082; /* Borda roxa */
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 95%;
+            max-width: 738px;
+            height: 95%;
+            max-height: 1600px;
         }
         .logo {
-            width: 150px;
+            width: 250px;
             margin-bottom: 20px;
-        }
-        .instructions {
-            font-size: 18px;
-            color: #000;
-            text-align: center;
-            margin-bottom: 30px;
         }
         .button {
             display: block;
             width: 80%;
             max-width: 300px;
             padding: 15px;
-            margin: 10px 0;
+            margin: 20px auto;
             font-size: 18px;
             color: #fff;
             background-color: #007bff; /* Azul */
@@ -39,7 +44,6 @@
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
-            text-align: center;
         }
         .button:hover {
             background-color: #0056b3; /* Azul escuro */
@@ -47,9 +51,10 @@
     </style>
 </head>
 <body>
-    <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-    <div class="instructions">Use sua digital para desbloquear o app</div>
-    <a href="#" class="button">Incluir Custo</a>
-    <a href="#" class="button">Diário de Obra</a>
+    <div class="container">
+        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
+        <a href="#" class="button">Incluir Custo</a>
+        <a href="#" class="button">Diário de Obra</a>
+    </div>
 </body>
 </html>
