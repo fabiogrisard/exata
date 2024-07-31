@@ -30,7 +30,7 @@
             width: 200px;
             margin-bottom: 20px;
         }
-        .input {
+        .input, .select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -56,6 +56,11 @@
         .button:hover {
             background-color: #00008b; /* Azul escuro */
         }
+        .small-button {
+            width: auto;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
         .hidden {
             display: none;
         }
@@ -73,11 +78,26 @@
 
     <div class="container hidden" id="mainContainer">
         <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <a href="incluir-custo.html" class="button">Incluir Custo</a>
+        <a href="#" id="incluirCustoBtn" class="button">Incluir Custo</a>
         <a href="#" class="button">Diário de Obra</a>
         <a href="#" class="button">Acompanhe a Obra</a>
         <a href="#" class="button">Pagamentos</a>
         <a href="#" class="button">Previsão do Tempo</a>
+    </div>
+
+    <div class="container hidden" id="incluirCustoContainer">
+        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
+        <form id="costForm">
+            <select id="obra" class="select" required>
+                <option value="" disabled selected>Selecione a Obra</option>
+                <option value="jader">Jader</option>
+            </select>
+            <input type="text" id="fornecedor" class="input" placeholder="Fornecedor" required>
+            <input type="text" id="item" class="input" placeholder="Item" required>
+            <input type="number" id="valor" class="input" placeholder="Valor" required>
+            <button type="submit" class="button">Enviar</button>
+        </form>
+        <button id="voltarBtn" class="button small-button">Voltar</button>
     </div>
 
     <script>
@@ -86,6 +106,7 @@
 
         const loginContainer = document.getElementById('loginContainer');
         const mainContainer = document.getElementById('mainContainer');
+        const incluirCustoContainer = document.getElementById('incluirCustoContainer');
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -100,6 +121,65 @@
             } else {
                 alert('Usuário ou senha incorretos.');
             }
+        });
+
+        document.getElementById('incluirCustoBtn').addEventListener('click', function() {
+            mainContainer.classList.add('hidden');
+            incluirCustoContainer.classList.remove('hidden');
+        });
+
+        document.getElementById('voltarBtn').addEventListener('click', function() {
+            incluirCustoContainer.classList.add('hidden');
+            mainContainer.classList.remove('hidden');
+        });
+
+        document.getElementById('costForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const obra = document.getElementById('obra').value;
+            const fornecedor = document.getElementById('fornecedor').value;
+            const item = document.getElementById('item').value;
+            const valor = document.getElementById('valor').value;
+            const data = new Date().toISOString().split('T')[0]; // Data do dia no formato YYYY-MM-DD
+            const pagador = 'Fabio';
+
+            let planilha;
+            let pasta;
+
+            if (obra === 'jader') {
+                planilha = '1EJJLa0woaPy_ToWZjw3VZW0dzcdh07C9VdnSYtjlXvM/edit?gid=2118632720';
+                pasta = '1VZUKGZg8Yfv4bbCzgFxJ2p0VuL6EPCN0';
+            }
+
+            const dataToSend = {
+                obra,
+                fornecedor,
+                item,
+                valor,
+                data,
+                pagador,
+                planilha,
+                pasta
+            };
+
+            fetch('https://n8n.serranarealty.com.br/webhook/valores', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Dados enviados com sucesso!');
+                } else {
+                    alert('Falha ao enviar os dados.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao enviar os dados.');
+            });
         });
 
         // Salvar e recuperar o nome de usuário
