@@ -172,6 +172,8 @@
             .then(response => {
                 if (response.ok) {
                     alert('Dados enviados com sucesso!');
+                    // Limpar os campos do formulário
+                    document.getElementById('costForm').reset();
                 } else {
                     alert('Falha ao enviar os dados.');
                 }
