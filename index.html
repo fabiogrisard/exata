@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Exata Construções</title>
+    <title>Exata Construções</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,10 +53,13 @@
         .button:hover {
             background-color: #00008b; /* Azul escuro */
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="loginContainer">
         <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
         <form id="loginForm">
             <input type="text" id="username" class="input" placeholder="Usuário" required>
@@ -66,10 +69,19 @@
         <button id="fingerprintLogin" class="button">Login com Impressão Digital</button>
     </div>
 
+    <div class="container hidden" id="mainContainer">
+        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
+        <a href="#" class="button">Incluir Custo</a>
+        <a href="#" class="button">Diário de Obra</a>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
     <script>
         const correctUsername = 'fabiogrisard';
         const correctPassword = '32836058';
+
+        const loginContainer = document.getElementById('loginContainer');
+        const mainContainer = document.getElementById('mainContainer');
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -78,8 +90,9 @@
             
             if (username === correctUsername && password === correctPassword) {
                 alert('Login realizado com sucesso!');
-                // Redirecionar para a página principal ou realizar outras ações após o login bem-sucedido
-                window.location.href = "/exata/index.html"; // Redireciona para index.html
+                // Mostrar a página principal
+                loginContainer.classList.add('hidden');
+                mainContainer.classList.remove('hidden');
             } else {
                 alert('Usuário ou senha incorretos.');
             }
@@ -91,8 +104,9 @@
                 // Aqui você pode adicionar a lógica para autenticar o usuário com base no ID do visitante
                 if (visitorId === 'esperado_visitor_id') { // Substitua pelo ID do visitante esperado
                     alert('Autenticação por impressão digital bem-sucedida!');
-                    // Redirecionar para a página principal ou realizar outras ações após a autenticação bem-sucedida
-                    window.location.href = "/exata/index.html"; // Redireciona para index.html
+                    // Mostrar a página principal
+                    loginContainer.classList.add('hidden');
+                    mainContainer.classList.remove('hidden');
                 } else {
                     alert('Falha na autenticação por impressão digital.');
                 }
