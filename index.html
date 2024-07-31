@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exata Construções</title>
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+            .then(function() { console.log('Service Worker Registered'); });
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border: 2px solid #4b0082; /* Borda roxa */
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 95%;
+            max-width: 738px;
+            height: 95%;
+            max-height: 1600px;
+        }
+        .logo {
+            width: 250px;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            padding: 15px;
+            margin: 20px auto;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007bff; /* Azul */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3; /* Azul escuro */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
+        <a href="#" class="button">Incluir Custo</a>
+        <a href="#" class="button">Diário de Obra</a>
+    </div>
+</body>
+</html>
