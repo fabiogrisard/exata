@@ -78,7 +78,7 @@
         <a href="#" class="button">Diário de Obra</a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+    <script src="auth.js"></script>
     <script>
         const correctUsername = 'fabiogrisard';
         const correctPassword = '32836058';
@@ -102,10 +102,8 @@
         });
 
         document.getElementById('fingerprintLogin').addEventListener('click', function() {
-            FingerprintJS.load().then(fp => fp.get()).then(result => {
-                const visitorId = result.visitorId;
-                // Aqui você pode adicionar a lógica para autenticar o usuário com base no ID do visitante
-                if (visitorId === 'esperado_visitor_id') { // Substitua pelo ID do visitante esperado
+            authenticateWithFingerprint().then(success => {
+                if (success) {
                     alert('Autenticação por impressão digital bem-sucedida!');
                     // Mostrar a página principal
                     loginContainer.classList.add('hidden');
@@ -113,9 +111,6 @@
                 } else {
                     alert('Falha na autenticação por impressão digital.');
                 }
-            }).catch(error => {
-                alert('Falha na autenticação por impressão digital.');
-                console.error(error);
             });
         });
 
