@@ -82,7 +82,7 @@
         <a href="#" class="button">Diário de Obra</a>
         <a href="#" class="button">Acompanhe a Obra</a>
         <a href="#" class="button">Pagamentos</a>
-        <a href="#" class="button">Previsão do Tempo</a>
+        <a href="#" id="previsaoTempoBtn" class="button">Previsão do Tempo</a>
     </div>
 
     <div class="container hidden" id="incluirCustoContainer">
@@ -97,7 +97,15 @@
             <input type="number" id="valor" class="input" placeholder="Valor" required>
             <button type="submit" class="button">Enviar</button>
         </form>
-        <button id="voltarBtn" class="button small-button">Voltar</button>
+        <button id="voltarBtnCusto" class="button small-button">Voltar</button>
+    </div>
+
+    <div class="container hidden" id="previsaoTempoContainer">
+        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
+        <div id="cont_d713deb4f33e0a60a4537a731d9dcb0a">
+            <script type="text/javascript" async src="https://www.tempo.com/wid_loader/d713deb4f33e0a60a4537a731d9dcb0a"></script>
+        </div>
+        <button id="voltarBtnTempo" class="button small-button">Voltar</button>
     </div>
 
     <script>
@@ -107,6 +115,7 @@
         const loginContainer = document.getElementById('loginContainer');
         const mainContainer = document.getElementById('mainContainer');
         const incluirCustoContainer = document.getElementById('incluirCustoContainer');
+        const previsaoTempoContainer = document.getElementById('previsaoTempoContainer');
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -128,8 +137,18 @@
             incluirCustoContainer.classList.remove('hidden');
         });
 
-        document.getElementById('voltarBtn').addEventListener('click', function() {
+        document.getElementById('previsaoTempoBtn').addEventListener('click', function() {
+            mainContainer.classList.add('hidden');
+            previsaoTempoContainer.classList.remove('hidden');
+        });
+
+        document.getElementById('voltarBtnCusto').addEventListener('click', function() {
             incluirCustoContainer.classList.add('hidden');
+            mainContainer.classList.remove('hidden');
+        });
+
+        document.getElementById('voltarBtnTempo').addEventListener('click', function() {
+            previsaoTempoContainer.classList.add('hidden');
             mainContainer.classList.remove('hidden');
         });
 
