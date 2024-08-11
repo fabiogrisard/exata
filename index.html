@@ -31,7 +31,7 @@
             margin-bottom: 20px;
         }
         .input, .select, .textarea {
-            width: 100%;
+            width: calc(100% - 40px); /* Deixa espaço para o botão de áudio */
             padding: 10px;
             margin: 10px 0;
             font-size: 16px;
@@ -65,7 +65,21 @@
             display: none;
         }
         .audio-button {
-            margin-top: 10px;
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+            vertical-align: middle;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        .audio-button img {
+            width: 100%;
+            height: 100%;
+        }
+        .textarea-container {
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
@@ -116,9 +130,14 @@
         <form id="diarioObraForm">
             <input type="number" id="percentualObra" class="input" placeholder="Percentual da Obra (%)" required>
             <input type="text" id="faseObra" class="input" placeholder="Fase da Obra" required>
-            <textarea id="comentarios" class="textarea" placeholder="Comentários" required></textarea>
-            <textarea id="itensCompra" class="textarea" placeholder="Itens a Serem Comprados" required></textarea>
-            <button type="button" id="audioBtn" class="button audio-button">Ler Áudio</button>
+            <div class="textarea-container">
+                <textarea id="comentarios" class="textarea" placeholder="Comentários" required></textarea>
+                <button type="button" id="audioBtnComentarios" class="audio-button"><img src="https://img.icons8.com/ios-filled/50/000000/microphone.png" alt="Microfone"></button>
+            </div>
+            <div class="textarea-container">
+                <textarea id="itensCompra" class="textarea" placeholder="Itens a Serem Comprados" required></textarea>
+                <button type="button" id="audioBtnItens" class="audio-button"><img src="https://img.icons8.com/ios-filled/50/000000/microphone.png" alt="Microfone"></button>
+            </div>
             <button type="submit" class="button">Enviar</button>
         </form>
         <button id="voltarBtnDiario" class="button small-button">Voltar</button>
@@ -268,7 +287,7 @@
         });
 
         // Função para leitura de áudio usando a API Web Speech
-        document.getElementById('audioBtn').addEventListener('click', function() {
+        function startRecognition(targetElementId) {
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'pt-BR';
             recognition.interimResults = false;
@@ -276,7 +295,7 @@
 
             recognition.onresult = function(event) {
                 const transcript = event.results[0][0].transcript;
-                document.getElementById('itensCompra').value += transcript + '\n';
+                document.getElementById(targetElementId).value += transcript + '\n';
             };
 
             recognition.onerror = function(event) {
@@ -285,6 +304,14 @@
             };
 
             recognition.start();
+        }
+
+        document.getElementById('audioBtnComentarios').addEventListener('click', function() {
+            startRecognition('comentarios');
+        });
+
+        document.getElementById('audioBtnItens').addEventListener('click', function() {
+            startRecognition('itensCompra');
         });
 
         // Salvar e recuperar o nome de usuário
