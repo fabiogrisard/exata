@@ -30,7 +30,7 @@
             width: 200px;
             margin-bottom: 20px;
         }
-        .input, .select {
+        .input, .select, .textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -64,6 +64,9 @@
         .hidden {
             display: none;
         }
+        .audio-button {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -79,7 +82,7 @@
     <div class="container hidden" id="mainContainer">
         <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
         <a href="#" id="incluirCustoBtn" class="button">Incluir Custo</a>
-        <a href="#" class="button">Diário de Obra</a>
+        <a href="#" id="diarioObraBtn" class="button">Diário de Obra</a>
         <a href="#" class="button">Acompanhe a Obra</a>
         <a href="#" class="button">Pagamentos</a>
         <a href="#" id="previsaoTempoBtn" class="button">Previsão do Tempo</a>
@@ -102,10 +105,23 @@
 
     <div class="container hidden" id="previsaoTempoContainer">
         <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <div id="cont_d713deb4f33e0a60a4537a731d9dcb0a">
+        <div id="cont_d713deb4f33e0a60a4537a731d9dcb0a" style="margin-top: 20px;">
             <script type="text/javascript" async src="https://www.tempo.com/wid_loader/d713deb4f33e0a60a4537a731d9dcb0a"></script>
         </div>
         <button id="voltarBtnTempo" class="button small-button">Voltar</button>
+    </div>
+
+    <div class="container hidden" id="diarioObraContainer">
+        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
+        <form id="diarioObraForm">
+            <input type="number" id="percentualObra" class="input" placeholder="Percentual da Obra (%)" required>
+            <input type="text" id="faseObra" class="input" placeholder="Fase da Obra" required>
+            <textarea id="comentarios" class="textarea" placeholder="Comentários" required></textarea>
+            <textarea id="itensCompra" class="textarea" placeholder="Itens a Serem Comprados" required></textarea>
+            <button type="button" id="audioBtn" class="button audio-button">Ler Áudio</button>
+            <button type="submit" class="button">Enviar</button>
+        </form>
+        <button id="voltarBtnDiario" class="button small-button">Voltar</button>
     </div>
 
     <script>
@@ -116,6 +132,7 @@
         const mainContainer = document.getElementById('mainContainer');
         const incluirCustoContainer = document.getElementById('incluirCustoContainer');
         const previsaoTempoContainer = document.getElementById('previsaoTempoContainer');
+        const diarioObraContainer = document.getElementById('diarioObraContainer');
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -137,6 +154,11 @@
             incluirCustoContainer.classList.remove('hidden');
         });
 
+        document.getElementById('diarioObraBtn').addEventListener('click', function() {
+            mainContainer.classList.add('hidden');
+            diarioObraContainer.classList.remove('hidden');
+        });
+
         document.getElementById('previsaoTempoBtn').addEventListener('click', function() {
             mainContainer.classList.add('hidden');
             previsaoTempoContainer.classList.remove('hidden');
@@ -149,6 +171,11 @@
 
         document.getElementById('voltarBtnTempo').addEventListener('click', function() {
             previsaoTempoContainer.classList.add('hidden');
+            mainContainer.classList.remove('hidden');
+        });
+
+        document.getElementById('voltarBtnDiario').addEventListener('click', function() {
+            diarioObraContainer.classList.add('hidden');
             mainContainer.classList.remove('hidden');
         });
 
@@ -201,6 +228,63 @@
                 console.error('Erro:', error);
                 alert('Erro ao enviar os dados.');
             });
+        });
+
+        document.getElementById('diarioObraForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const percentualObra = document.getElementById('percentualObra').value;
+            const faseObra = document.getElementById('faseObra').value;
+            const comentarios = document.getElementById('comentarios').value;
+            const itensCompra = document.getElementById('itensCompra').value;
+
+            const dataToSend = {
+                percentualObra,
+                faseObra,
+                comentarios,
+                itensCompra
+            };
+
+            fetch('https://n8n.serranarealty.com.br/webhook/diario_obra', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Dados enviados com sucesso!');
+                    // Limpar os campos do formulário
+                    document.getElementById('diarioObraForm').reset();
+                } else {
+                    alert('Falha ao enviar os dados.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao enviar os dados.');
+            });
+        });
+
+        // Função para leitura de áudio usando a API Web Speech
+        document.getElementById('audioBtn').addEventListener('click', function() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'pt-BR';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('itensCompra').value += transcript + '\n';
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Erro no reconhecimento de fala:', event.error);
+                alert('Erro ao reconhecer o áudio: ' + event.error);
+            };
+
+            recognition.start();
         });
 
         // Salvar e recuperar o nome de usuário
