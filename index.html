@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exata Construções</title>
-    <link rel="manifest" href="manifest.json">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,6 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
         .container {
             background-color: #fff;
@@ -25,6 +25,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 90%;
             max-width: 400px;
+            margin-bottom: 20px;
         }
         .logo {
             width: 200px;
@@ -64,35 +65,9 @@
         .hidden {
             display: none;
         }
-        .audio-button {
-            width: 30px;
-            height: 30px;
-            margin-left: 10px;
-            vertical-align: middle;
-            cursor: pointer;
-            border: none;
-            background: none;
-        }
-        .audio-button img {
-            width: 100%;
-            height: 100%;
-        }
         .textarea-container {
             display: flex;
             align-items: center;
-        }
-        .percentual-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 10px 0;
-        }
-        .percentual-container label {
-            flex: 1;
-            text-align: left;
-        }
-        .percentual-container select {
-            flex: 1;
         }
     </style>
 </head>
@@ -151,9 +126,13 @@
                 <button type="button" id="audioBtnComentarios" class="audio-button"><img src="https://img.icons8.com/ios-filled/50/000000/microphone.png" alt="Microfone"></button>
             </div>
             <div class="textarea-container">
-                <textarea id="itensCompra" class="textarea" placeholder="Itens a Serem Comprados" required></textarea>
+                <textarea id="itensCompra" class="textarea" placeholder="Itens a Serem Comprados"></textarea>
                 <button type="button" id="audioBtnItens" class="audio-button"><img src="https://img.icons8.com/ios-filled/50/000000/microphone.png" alt="Microfone"></button>
             </div>
+            <input type="file" id="foto1" class="input" accept="image/*" capture="camera">
+            <input type="file" id="foto2" class="input" accept="image/*" capture="camera">
+            <input type="file" id="foto3" class="input" accept="image/*" capture="camera">
+            <input type="file" id="foto4" class="input" accept="image/*" capture="camera">
             <button type="submit" class="button">Enviar</button>
         </form>
         <button id="voltarBtnDiario" class="button small-button">Voltar</button>
@@ -161,180 +140,7 @@
 
     <div class="container hidden" id="percentualObraContainer">
         <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <form id="percentualObraForm">
-            <div class="percentual-container">
-                <label for="barracao">Barracão+lig. provisórias(água/luz)+projetos/aprovs.</label>
-                <select id="barracao" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="infraestrutura">Infraestrutura (estacas, brocas, baldrames, sapatas)</label>
-                <select id="infraestrutura" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="supraestrutura">Supraestrutura (Vigas, pilares, cintas, escadas)</label>
-                <select id="supraestrutura" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="paredes">Paredes e Painéis</label>
-                <select id="paredes" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="esquadrias">Esquadrias</label>
-                <select id="esquadrias" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="vidros">Vidros e Pásticos</label>
-                <select id="vidros" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="coberturas">Coberturas (estrutura e telhas)</label>
-                <select id="coberturas" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="impermeabilizacoes">Impermeabilizaçoes</label>
-                <select id="impermeabilizacoes" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="revestimentosInternos">Revestimentos Internos</label>
-                <select id="revestimentosInternos" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="forros">Forros</label>
-                <select id="forros" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="revestimentosExternos">Revestimentos Externos</label>
-                <select id="revestimentosExternos" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="pisos">Pisos</label>
-                <select id="pisos" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="pinturas">Pinturas</label>
-                <select id="pinturas" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="acabamentos">Acabamentos (soleiras, rodapes, peitoril etc.)</label>
-                <select id="acabamentos" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="eletricas">Instalações Elétricas e Telefônicas</label>
-                <select id="eletricas" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="hidraulicas">Instalaçoes Hidráulicas</label>
-                <select id="hidraulicas" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="esgoto">Instalações: Esgoto e Águas Pluviais</label>
-                <select id="esgoto" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="loucas">Louças e Metais</label>
-                <select id="loucas" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="percentual-container">
-                <label for="complementos">Complementos (limpeza final e calafete)</label>
-                <select id="complementos" class="select">
-                    <option value="0">0%</option>
-                    <option value="25">25%</option>
-                    <option value="50">50%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <button type="submit" class="button">Salvar</button>
-        </form>
+        <iframe src="https://docs.google.com/spreadsheets/d/18YZ26f4JYvQeFUbTVtkiLzDB5FJI145z/pubhtml?widget=true&amp;headers=false" width="100%" height="600px"></iframe>
         <button id="voltarBtnPercentual" class="button small-button">Voltar</button>
     </div>
 
@@ -382,7 +188,6 @@
         document.getElementById('percentualObraBtn').addEventListener('click', function() {
             mainContainer.classList.add('hidden');
             percentualObraContainer.classList.remove('hidden');
-            loadPercentuais(); // Carregar percentuais salvos
         });
 
         document.getElementById('voltarBtnCusto').addEventListener('click', function() {
@@ -462,19 +267,28 @@
             const obra = document.getElementById('obraDiario').value;
             const faseComentarios = document.getElementById('faseComentarios').value;
             const itensCompra = document.getElementById('itensCompra').value;
+            const foto1 = document.getElementById('foto1').files[0];
+            const foto2 = document.getElementById('foto2').files[0];
+            const foto3 = document.getElementById('foto3').files[0];
+            const foto4 = document.getElementById('foto4').files[0];
 
-            const dataToSend = {
-                obra,
-                faseComentarios,
-                itensCompra
-            };
+            if (!obra || !faseComentarios || (!foto1 && !foto2 && !foto3 && !foto4)) {
+                alert('Por favor, preencha todos os campos obrigatórios e adicione pelo menos uma foto.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('obra', obra);
+            formData.append('faseComentarios', faseComentarios);
+            formData.append('itensCompra', itensCompra);
+            if (foto1) formData.append('foto1', foto1);
+            if (foto2) formData.append('foto2', foto2);
+            if (foto3) formData.append('foto3', foto3);
+            if (foto4) formData.append('foto4', foto4);
 
             fetch('https://n8n.serranarealty.com.br/webhook/diario_obra', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataToSend)
+                body: formData
             })
             .then(response => {
                 if (response.ok) {
@@ -530,64 +344,6 @@
         // Salvar o nome de usuário ao enviar o formulário
         document.getElementById('loginForm').addEventListener('submit', function() {
             localStorage.setItem('username', usernameInput.value);
-        });
-
-        // Função para salvar os percentuais no localStorage
-        function savePercentuais() {
-            const percentuais = {
-                barracao: document.getElementById('barracao').value,
-                infraestrutura: document.getElementById('infraestrutura').value,
-                supraestrutura: document.getElementById('supraestrutura').value,
-                paredes: document.getElementById('paredes').value,
-                esquadrias: document.getElementById('esquadrias').value,
-                vidros: document.getElementById('vidros').value,
-                coberturas: document.getElementById('coberturas').value,
-                impermeabilizacoes: document.getElementById('impermeabilizacoes').value,
-                revestimentosInternos: document.getElementById('revestimentosInternos').value,
-                forros: document.getElementById('forros').value,
-                revestimentosExternos: document.getElementById('revestimentosExternos').value,
-                pisos: document.getElementById('pisos').value,
-                pinturas: document.getElementById('pinturas').value,
-                acabamentos: document.getElementById('acabamentos').value,
-                eletricas: document.getElementById('eletricas').value,
-                hidraulicas: document.getElementById('hidraulicas').value,
-                esgoto: document.getElementById('esgoto').value,
-                loucas: document.getElementById('loucas').value,
-                complementos: document.getElementById('complementos').value
-            };
-            localStorage.setItem('percentuais', JSON.stringify(percentuais));
-        }
-
-        // Função para carregar os percentuais do localStorage
-        function loadPercentuais() {
-            const percentuais = JSON.parse(localStorage.getItem('percentuais'));
-            if (percentuais) {
-                document.getElementById('barracao').value = percentuais.barracao;
-                document.getElementById('infraestrutura').value = percentuais.infraestrutura;
-                document.getElementById('supraestrutura').value = percentuais.supraestrutura;
-                document.getElementById('paredes').value = percentuais.paredes;
-                document.getElementById('esquadrias').value = percentuais.esquadrias;
-                document.getElementById('vidros').value = percentuais.vidros;
-                document.getElementById('coberturas').value = percentuais.coberturas;
-                document.getElementById('impermeabilizacoes').value = percentuais.impermeabilizacoes;
-                document.getElementById('revestimentosInternos').value = percentuais.revestimentosInternos;
-                document.getElementById('forros').value = percentuais.forros;
-                document.getElementById('revestimentosExternos').value = percentuais.revestimentosExternos;
-                document.getElementById('pisos').value = percentuais.pisos;
-                document.getElementById('pinturas').value = percentuais.pinturas;
-                document.getElementById('acabamentos').value = percentuais.acabamentos;
-                document.getElementById('eletricas').value = percentuais.eletricas;
-                document.getElementById('hidraulicas').value = percentuais.hidraulicas;
-                document.getElementById('esgoto').value = percentuais.esgoto;
-                document.getElementById('loucas').value = percentuais.loucas;
-                document.getElementById('complementos').value = percentuais.complementos;
-            }
-        }
-
-        document.getElementById('percentualObraForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            savePercentuais(); // Salvar percentuais
-            alert('Percentuais salvos com sucesso!');
         });
     </script>
 </body>
