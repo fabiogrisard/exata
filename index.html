@@ -81,6 +81,18 @@
             display: flex;
             align-items: center;
         }
+        .percentual-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 10px 0;
+        }
+        .percentual-container label {
+            margin: 5px 0;
+        }
+        .percentual-container input {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -128,10 +140,41 @@
     <div class="container hidden" id="diarioObraContainer">
         <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
         <form id="diarioObraForm">
-            <input type="number" id="percentualObra" class="input" placeholder="Percentual da Obra (%)" required>
-            <input type="text" id="faseObra" class="input" placeholder="Fase da Obra" required>
+            <select id="obraDiario" class="select" required>
+                <option value="" disabled selected>Selecione a Obra</option>
+                <option value="jader">Jader</option>
+            </select>
+            <div class="percentual-container">
+                <label for="percentualObra">Percentual da Obra (%)</label>
+                <input type="number" id="percentualObra" class="input" placeholder="Percentual da Obra (%)" required>
+            </div>
+            <div class="percentual-container">
+                <label for="itemPercentual">Item</label>
+                <select id="itemPercentual" class="select">
+                    <option value="" disabled selected>Selecione o Item</option>
+                    <option value="1.55">Barracão+lig. provisórias(água/luz)+projetos/aprovs.</option>
+                    <option value="3.20">Infraestrutura (estacas, brocas, baldrames, sapatas)</option>
+                    <option value="15.98">Supraestrutura (Vigas, pilares, cintas, escadas)</option>
+                    <option value="10.12">Paredes e Painéis</option>
+                    <option value="10.12">Esquadrias</option>
+                    <option value="2.16">Vidros e Pásticos</option>
+                    <option value="8.09">Coberturas (estrutura e telhas)</option>
+                    <option value="2.70">Impermeabilizaçoes</option>
+                    <option value="7.42">Revestimentos Internos</option>
+                    <option value="2.02">Forros</option>
+                    <option value="4.72">Revestimentos Externos</option>
+                    <option value="8.77">Pisos</option>
+                    <option value="4.72">Pinturas</option>
+                    <option value="1.35">Acabamentos (soleiras, rodapes, peitoril etc.)</option>
+                    <option value="3.87">Instalações Elétricas e Telefônicas</option>
+                    <option value="3.64">Instalaçoes Hidráulicas</option>
+                    <option value="3.78">Instalações: Esgoto e Águas Pluviais</option>
+                    <option value="4.79">Louças e Metais</option>
+                    <option value="1.01">Complementos (limpeza final e calafete)</option>
+                </select>
+            </div>
             <div class="textarea-container">
-                <textarea id="comentarios" class="textarea" placeholder="Comentários" required></textarea>
+                <textarea id="faseComentarios" class="textarea" placeholder="Fase da Obra/Comentários" required></textarea>
                 <button type="button" id="audioBtnComentarios" class="audio-button"><img src="https://img.icons8.com/ios-filled/50/000000/microphone.png" alt="Microfone"></button>
             </div>
             <div class="textarea-container">
@@ -252,15 +295,19 @@
         document.getElementById('diarioObraForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
+            const obra = document.getElementById('obraDiario').value;
             const percentualObra = document.getElementById('percentualObra').value;
-            const faseObra = document.getElementById('faseObra').value;
-            const comentarios = document.getElementById('comentarios').value;
+            const itemPercentual = document.getElementById('itemPercentual').value;
+            const faseComentarios = document.getElementById('faseComentarios').value;
             const itensCompra = document.getElementById('itensCompra').value;
 
+            const percentualCalculado = (percentualObra / 100) * itemPercentual;
+
             const dataToSend = {
+                obra,
                 percentualObra,
-                faseObra,
-                comentarios,
+                percentualCalculado,
+                faseComentarios,
                 itensCompra
             };
 
@@ -307,7 +354,7 @@
         }
 
         document.getElementById('audioBtnComentarios').addEventListener('click', function() {
-            startRecognition('comentarios');
+            startRecognition('faseComentarios');
         });
 
         document.getElementById('audioBtnItens').addEventListener('click', function() {
