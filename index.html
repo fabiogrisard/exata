@@ -280,7 +280,7 @@
             if (foto3) formData.append('foto3', renameFile(foto3, `${data}_03.${foto3.name.split('.').pop()}`));
             if (foto4) formData.append('foto4', renameFile(foto4, `${data}_04.${foto4.name.split('.').pop()}`));
 
-            fetch('https://n8n.serranarealty.com.br/webhook-test/diario_obra', {
+            fetch('https://n8n.serranarealty.com.br/webhook/diario_obra', {
                 method: 'POST',
                 body: formData
             })
