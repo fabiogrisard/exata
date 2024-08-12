@@ -268,6 +268,10 @@
             if (foto3) formData.append('foto3', foto3);
             if (foto4) formData.append('foto4', foto4);
 
+            // Adiciona a nova pasta para o diário de obra
+            const pastaDiario = '1MC__ZTFcBQyDs7nFa4or3D0SpjSn5uIL';
+            formData.append('pastaDiario', pastaDiario);
+
             fetch('https://n8n.serranarealty.com.br/webhook/diario_obra', {
                 method: 'POST',
                 body: formData
