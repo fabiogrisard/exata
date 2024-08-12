@@ -88,7 +88,6 @@
         <a href="#" class="button">Acompanhe a Obra</a>
         <a href="#" class="button">Pagamentos</a>
         <a href="#" id="previsaoTempoBtn" class="button">Previsão do Tempo</a>
-        <a href="#" id="percentualObraBtn" class="button">Percentual de Obra</a>
     </div>
 
     <div class="container hidden" id="incluirCustoContainer">
@@ -138,12 +137,6 @@
         <button id="voltarBtnDiario" class="button small-button">Voltar</button>
     </div>
 
-    <div class="container hidden" id="percentualObraContainer">
-        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <iframe src="https://docs.google.com/spreadsheets/d/18YZ26f4JYvQeFUbTVtkiLzDB5FJI145z/pubhtml?widget=true&amp;headers=false" width="100%" height="600px"></iframe>
-        <button id="voltarBtnPercentual" class="button small-button">Voltar</button>
-    </div>
-
     <script>
         const correctUsername = 'fabiogrisard';
         const correctPassword = 'coxa1320';
@@ -153,7 +146,6 @@
         const incluirCustoContainer = document.getElementById('incluirCustoContainer');
         const previsaoTempoContainer = document.getElementById('previsaoTempoContainer');
         const diarioObraContainer = document.getElementById('diarioObraContainer');
-        const percentualObraContainer = document.getElementById('percentualObraContainer');
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -185,11 +177,6 @@
             previsaoTempoContainer.classList.remove('hidden');
         });
 
-        document.getElementById('percentualObraBtn').addEventListener('click', function() {
-            mainContainer.classList.add('hidden');
-            percentualObraContainer.classList.remove('hidden');
-        });
-
         document.getElementById('voltarBtnCusto').addEventListener('click', function() {
             incluirCustoContainer.classList.add('hidden');
             mainContainer.classList.remove('hidden');
@@ -202,11 +189,6 @@
 
         document.getElementById('voltarBtnDiario').addEventListener('click', function() {
             diarioObraContainer.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
-        });
-
-        document.getElementById('voltarBtnPercentual').addEventListener('click', function() {
-            percentualObraContainer.classList.add('hidden');
             mainContainer.classList.remove('hidden');
         });
 
