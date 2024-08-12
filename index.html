@@ -260,19 +260,27 @@
             }
 
             const formData = new FormData();
+            const data = new Date().toISOString().split('T')[0]; // Data do dia no formato YYYY-MM-DD
+
+            formData.append('data', data);
             formData.append('obra', obra);
             formData.append('faseComentarios', faseComentarios);
             formData.append('itensCompra', itensCompra);
-            if (foto1) formData.append('foto1', foto1);
-            if (foto2) formData.append('foto2', foto2);
-            if (foto3) formData.append('foto3', foto3);
-            if (foto4) formData.append('foto4', foto4);
+            formData.append('pastaDiario', '1MC__ZTFcBQyDs7nFa4or3D0SpjSn5uIL');
+            formData.append('planilha', '1EJJLa0woaPy_ToWZjw3VZW0dzcdh07C9VdnSYtjlXvM');
+            formData.append('pasta', '1VZUKGZg8Yfv4bbCzgFxJ2p0VuL6EPCN0');
 
-            // Adiciona a nova pasta para o diário de obra
-            const pastaDiario = '1MC__ZTFcBQyDs7nFa4or3D0SpjSn5uIL';
-            formData.append('pastaDiario', pastaDiario);
+            // Função para renomear fotos
+            function renameFile(file, newName) {
+                return new File([file], newName, { type: file.type });
+            }
 
-            fetch('https://n8n.serranarealty.com.br/webhook/diario_obra', {
+            if (foto1) formData.append('foto1', renameFile(foto1, `${data}_01.${foto1.name.split('.').pop()}`));
+            if (foto2) formData.append('foto2', renameFile(foto2, `${data}_02.${foto2.name.split('.').pop()}`));
+            if (foto3) formData.append('foto3', renameFile(foto3, `${data}_03.${foto3.name.split('.').pop()}`));
+            if (foto4) formData.append('foto4', renameFile(foto4, `${data}_04.${foto4.name.split('.').pop()}`));
+
+            fetch('https://n8n.serranarealty.com.br/webhook-test/diario_obra', {
                 method: 'POST',
                 body: formData
             })
