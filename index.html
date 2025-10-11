@@ -118,7 +118,7 @@
         <form id="diarioObraForm">
             <select id="obraDiario" class="select" required>
                 <option value="" disabled selected>Selecione a Obra</option>
-                <option value="jader">Jader</option>
+                <option value="apartamento">Apartamento</option>
             </select>
             <div class="textarea-container">
                 <textarea id="faseComentarios" class="textarea" placeholder="Fase da Obra/Comentários" required></textarea>
@@ -221,7 +221,7 @@
                 pasta
             };
 
-            fetch('https://n8n.serranarealty.com.br/webhook/valores', {
+            fetch('https://prehistoriclobster-n8n.cloudfy.live/webhook/valores', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -280,7 +280,7 @@
             if (foto3) formData.append('foto3', renameFile(foto3, `${data}_03.${foto3.name.split('.').pop()}`));
             if (foto4) formData.append('foto4', renameFile(foto4, `${data}_04.${foto4.name.split('.').pop()}`));
 
-            fetch('https://n8n.serranarealty.com.br/webhook/diario_obra', {
+            fetch('https://prehistoriclobster-n8n.cloudfy.live/webhook/diario_obra', {
                 method: 'POST',
                 body: formData
             })
