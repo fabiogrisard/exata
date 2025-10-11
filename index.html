@@ -22,7 +22,7 @@
             border-radius: 10px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba/rgba(0, 0, 0, 0.1);
             width: 90%;
             max-width: 400px;
             margin-bottom: 20px;
@@ -69,6 +69,23 @@
             display: flex;
             align-items: center;
         }
+        /* New style for audio button */
+        .audio-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 10px; /* Adjust spacing as needed */
+            height: 40px; /* Match input height for better alignment */
+            width: 40px; /* Match input height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .audio-button img {
+            width: 30px; /* Adjust microphone icon size */
+            height: 30px;
+        }
     </style>
 </head>
 <body>
@@ -95,7 +112,7 @@
         <form id="costForm">
             <select id="obra" class="select" required>
                 <option value="" disabled selected>Selecione a Obra</option>
-                <option value="jader">Jader</option>
+                <!-- As opções serão populadas dinamicamente pelo JavaScript -->
             </select>
             <input type="text" id="fornecedor" class="input" placeholder="Fornecedor" required>
             <input type="text" id="item" class="input" placeholder="Item" required>
@@ -118,7 +135,7 @@
         <form id="diarioObraForm">
             <select id="obraDiario" class="select" required>
                 <option value="" disabled selected>Selecione a Obra</option>
-                <option value="apartamento">Apartamento</option>
+                <!-- As opções serão populadas dinamicamente pelo JavaScript -->
             </select>
             <div class="textarea-container">
                 <textarea id="faseComentarios" class="textarea" placeholder="Fase da Obra/Comentários" required></textarea>
@@ -138,6 +155,37 @@
     </div>
 
     <script>
+        // --- INÍCIO DA ÁREA DE CONFIGURAÇÕES CENTRALIZADAS ---
+        // Aqui você pode facilmente adicionar, remover ou editar projetos.
+        // Cada objeto representa uma obra/projeto e contém IDs importantes.
+        const projectConfigurations = [
+            {
+                id: 'apartamento', // ID único para referência interna
+                name: 'Apartamento Patricia', // Nome amigável que aparece na lista
+                sheetsId: '1BMf99cthQ0jaIz2rrMFt6tAzA4PtqDNcQPaA9-XAa2o', // ID da planilha Google Sheets para registro de custos
+                driveFolderId: '1vfQuGe4ukcloG9LxiL49ck31ajWjQbcO', // ID da pasta do Google Drive para upload de fotos/documentos gerais
+                dailyLogDriveFolderId: '1vfQuGe4ukcloG9LxiL49ck31ajWjQbcO' // ID da pasta do Google Drive específica para o diário de obra (pode ser o mesmo que driveFolderId ou diferente)
+            },
+            {
+                id: 'Felipe',
+                name: 'Casa Felipe',
+                sheetsId: '1EJJLa0woaPy_ToWZjw3VZW0dzcdh07C9VdnSYtjlXvM', // 
+                driveFolderId: '1VZUKGZg8Yfv4bbCzgFxJ2p0VuL6EPCN0', // 
+                dailyLogDriveFolderId: '1MC__ZTFcBQyDs7nFa4or3D0SpjSn5uIL' // 
+            }
+            // Para adicionar um novo projeto (ex: Casa do Felipe):
+            // Basta adicionar um novo objeto abaixo, seguindo o mesmo formato.
+            // {
+            //     id: 'casa_felipe', // Use um ID único e fácil de identificar
+            //     name: 'Casa do Felipe', // Nome que aparecerá nas listas suspensas
+            //     sheetsId: 'ID_DA_PLANILHA_GOOGLESHEETS_DA_CASA_DO_FELIPE',
+            //     driveFolderId: 'ID_DA_PASTA_DRIVE_GERAL_DA_CASA_DO_FELIPE',
+            //     dailyLogDriveFolderId: 'ID_DA_PASTA_DRIVE_DIARIO_DA_CASA_DO_FELIPE' // Se for uma pasta diferente para o diário
+            // }
+        ];
+        // --- FIM DA ÁREA DE CONFIGURAÇÕES CENTRALIZADAS ---
+
+
         const correctUsername = 'fabiogrisard';
         const correctPassword = 'coxa1320';
 
@@ -146,15 +194,44 @@
         const incluirCustoContainer = document.getElementById('incluirCustoContainer');
         const previsaoTempoContainer = document.getElementById('previsaoTempoContainer');
         const diarioObraContainer = document.getElementById('diarioObraContainer');
+        // Referências diretas aos elementos select para facilitar o uso na função populate
+        const selectObra = document.getElementById('obra');
+        const selectObraDiario = document.getElementById('obraDiario');
+
+        // Função para popular as listas suspensas de obras
+        function populateProjectSelects() {
+            // Limpa as opções existentes, mantendo a opção "Selecione a Obra" (índice 0)
+            // Percorre de trás para frente para evitar problemas com o índice ao remover
+            for (let i = selectObra.options.length - 1; i > 0; i--) {
+                selectObra.remove(i);
+            }
+            for (let i = selectObraDiario.options.length - 1; i > 0; i--) {
+                selectObraDiario.remove(i);
+            }
+
+            projectConfigurations.forEach(project => {
+                const optionCusto = document.createElement('option');
+                optionCusto.value = project.id; // Usa o ID para o valor da opção
+                optionCusto.textContent = project.name; // Usa o nome amigável para o texto
+                selectObra.appendChild(optionCusto);
+
+                const optionDiario = document.createElement('option');
+                optionDiario.value = project.id;
+                optionDiario.textContent = project.name;
+                selectObraDiario.appendChild(optionDiario);
+            });
+        }
+
+        // Chama a função para popular as listas quando o script é carregado
+        populateProjectSelects();
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            
+
             if (username === correctUsername && password === correctPassword) {
                 alert('Login realizado com sucesso!');
-                // Mostrar a página principal
                 loginContainer.classList.add('hidden');
                 mainContainer.classList.remove('hidden');
             } else {
@@ -195,30 +272,30 @@
         document.getElementById('costForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
-            const obra = document.getElementById('obra').value;
+            const selectedObraId = selectObra.value;
+            // Encontra a configuração do projeto selecionado
+            const selectedProject = projectConfigurations.find(p => p.id === selectedObraId);
+
+            if (!selectedProject) {
+                alert('Por favor, selecione uma obra válida.');
+                return;
+            }
+
             const fornecedor = document.getElementById('fornecedor').value;
             const item = document.getElementById('item').value;
             const valor = document.getElementById('valor').value;
-            const data = new Date().toISOString().split('T')[0]; // Data do dia no formato YYYY-MM-DD
+            const data = new Date().toISOString().split('T')[0];
             const pagador = 'Fabio';
 
-            let planilha;
-            let pasta;
-
-            if (obra === 'jader') {
-                planilha = '1EJJLa0woaPy_ToWZjw3VZW0dzcdh07C9VdnSYtjlXvM';
-                pasta = '1VZUKGZg8Yfv4bbCzgFxJ2p0VuL6EPCN0';
-            }
-
             const dataToSend = {
-                obra,
+                obra: selectedProject.name, // Envia o nome amigável da obra
                 fornecedor,
                 item,
                 valor,
                 data,
                 pagador,
-                planilha,
-                pasta
+                planilha: selectedProject.sheetsId, // Pega o ID da planilha da configuração
+                pasta: selectedProject.driveFolderId // Pega o ID da pasta do Drive da configuração
             };
 
             fetch('https://prehistoriclobster-n8n.cloudfy.live/webhook/valores', {
@@ -231,7 +308,6 @@
             .then(response => {
                 if (response.ok) {
                     alert('Dados enviados com sucesso!');
-                    // Limpar os campos do formulário
                     document.getElementById('costForm').reset();
                 } else {
                     alert('Falha ao enviar os dados.');
@@ -246,7 +322,15 @@
         document.getElementById('diarioObraForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
-            const obra = document.getElementById('obraDiario').value;
+            const selectedObraDiarioId = selectObraDiario.value;
+            // Encontra a configuração do projeto selecionado para o diário de obra
+            const selectedProject = projectConfigurations.find(p => p.id === selectedObraDiarioId);
+
+            if (!selectedProject) {
+                alert('Por favor, selecione uma obra válida.');
+                return;
+            }
+
             const faseComentarios = document.getElementById('faseComentarios').value;
             const itensCompra = document.getElementById('itensCompra').value;
             const foto1 = document.getElementById('foto1').files[0];
@@ -254,21 +338,21 @@
             const foto3 = document.getElementById('foto3').files[0];
             const foto4 = document.getElementById('foto4').files[0];
 
-            if (!obra || !faseComentarios || (!foto1 && !foto2 && !foto3 && !foto4)) {
-                alert('Por favor, preencha todos os campos obrigatórios e adicione pelo menos uma foto.');
+            if (!selectedObraDiarioId || !faseComentarios || (!foto1 && !foto2 && !foto3 && !foto4)) {
+                alert('Por favor, selecione a obra, preencha a fase/comentários e adicione pelo menos uma foto.');
                 return;
             }
 
             const formData = new FormData();
-            const data = new Date().toISOString().split('T')[0]; // Data do dia no formato YYYY-MM-DD
+            const data = new Date().toISOString().split('T')[0];
 
             formData.append('data', data);
-            formData.append('obra', obra);
+            formData.append('obra', selectedProject.name); // Envia o nome amigável da obra
             formData.append('faseComentarios', faseComentarios);
             formData.append('itensCompra', itensCompra);
-            formData.append('pastaDiario', '1MC__ZTFcBQyDs7nFa4or3D0SpjSn5uIL');
-            formData.append('planilha', '1EJJLa0woaPy_ToWZjw3VZW0dzcdh07C9VdnSYtjlXvM');
-            formData.append('pasta', '1VZUKGZg8Yfv4bbCzgFxJ2p0VuL6EPCN0');
+            formData.append('pastaDiario', selectedProject.dailyLogDriveFolderId); // Pega o ID da pasta de diário da configuração
+            formData.append('planilha', selectedProject.sheetsId); // Pega o ID da planilha da configuração
+            formData.append('pasta', selectedProject.driveFolderId); // Pega o ID da pasta do Drive da configuração
 
             // Função para renomear fotos
             function renameFile(file, newName) {
@@ -287,7 +371,6 @@
             .then(response => {
                 if (response.ok) {
                     alert('Dados enviados com sucesso!');
-                    // Limpar os campos do formulário
                     document.getElementById('diarioObraForm').reset();
                 } else {
                     alert('Falha ao enviar os dados.');
