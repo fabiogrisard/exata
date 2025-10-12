@@ -6,7 +6,7 @@ self.addEventListener('install', function(event) {
             return cache.addAll([
                 '/exata/',
                 '/exata/index.html',
-                '/exata/auth.js',
+                // '/exata/auth.js', // LINHA REMOVIDA OU COMENTADA: Removida a referência a auth.js
                 '/exata/manifest.json',
                 '/exata/service-worker.js', // Certifique-se de incluir o próprio service worker
                 'https://fabiogrisard.github.io/exata/logo2.bmp',
