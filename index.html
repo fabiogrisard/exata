@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exata Construções</title>
+    <link rel="manifest" href="/exata/manifest.json"> <!-- LINHA ADICIONADA: Vincula o manifest.json -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -422,6 +423,20 @@
         document.getElementById('loginForm').addEventListener('submit', function() {
             localStorage.setItem('username', usernameInput.value);
         });
+
+        // --- INÍCIO DO CÓDIGO PWA (REGISTRO DO SERVICE WORKER) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/exata/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado com sucesso:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Falha no registro do Service Worker:', error);
+                    });
+            });
+        }
+        // --- FIM DO CÓDIGO PWA ---
     </script>
 </body>
 </html>
