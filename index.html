@@ -3,440 +3,443 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exata Construções</title>
-    <link rel="manifest" href="/exata/manifest.json"> <!-- LINHA ADICIONADA: Vincula o manifest.json -->
+    <title>Método Comparativo Direto de Dados de Mercado</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --bg-color: #ffffff;
+            --text-color: #212529;
+            --border-color: #dee2e6;
+        }
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
         .container {
-            background-color: #fff;
-            border: 2px solid #4b0082; /* Borda roxa */
-            border-radius: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
+        }
+        header {
             text-align: center;
-            box-shadow: 0 0 10px rgba/rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
         }
         .logo {
-            width: 200px;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .section {
+            background: var(--light-color);
             margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
         }
-        .input, .select, .textarea {
-            width: calc(100% - 40px); /* Deixa espaço para o botão de áudio */
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
         }
-        .button {
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        label {
+            font-weight: bold;
             display: block;
+            margin-bottom: 5px;
+        }
+        input, select, textarea {
             width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            font-size: 18px;
-            color: #fff;
-            background-color: #0000ff; /* Azul */
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+        }
+        button {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            text-decoration: none;
-            box-sizing: border-box;
+            font-size: 16px;
+            transition: background 0.3s;
         }
-        .button:hover {
-            background-color: #00008b; /* Azul escuro */
+        button:hover {
+            background: #0056b3;
         }
-        .small-button {
-            width: auto;
-            padding: 10px 20px;
-            font-size: 14px;
+        .btn-group {
+            text-align: center;
+            margin-top: 20px;
         }
-        .hidden {
+        .btn-success { background: var(--success-color); }
+        .btn-success:hover { background: #218838; }
+        .btn-danger { background: var(--danger-color); }
+        .btn-danger:hover { background: #c82333; }
+        .comparavel {
+            border: 2px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .report {
             display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .textarea-container {
-            display: flex;
-            align-items: center;
-        }
-        /* New style for audio button */
-        .audio-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            margin-left: 10px; /* Adjust spacing as needed */
-            height: 40px; /* Match input height for better alignment */
-            width: 40px; /* Match input height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .audio-button img {
-            width: 30px; /* Adjust microphone icon size */
-            height: 30px;
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container" id="loginContainer">
-        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <form id="loginForm">
-            <input type="text" id="username" class="input" placeholder="Usuário" required>
-            <input type="password" id="password" class="input" placeholder="Senha" required>
-            <button type="submit" class="button">Login</button>
+    <div class="container">
+        <header>
+            <div class="logo">🏠 Laudo Imobiliário</div>
+            <h1>Método Comparativo Direto de Dados de Mercado (MCDDM)</h1>
+        </header>
+
+        <form id="mcddmForm">
+            <!-- Seção Imóvel Objeto -->
+            <div class="section">
+                <h2>1. Dados do Imóvel Objeto</h2>
+                <div class="form-grid">
+                    <div>
+                        <label for="objetoEndereco">Endereço:</label>
+                        <input type="text" id="objetoEndereco" required>
+                    </div>
+                    <div>
+                        <label for="objetoArea">Área útil (m²):</label>
+                        <input type="number" id="objetoArea" step="0.01" min="0" required>
+                    </div>
+                    <div>
+                        <label for="objetoQuartos">Nº de Quartos:</label>
+                        <input type="number" id="objetoQuartos" min="0" required>
+                    </div>
+                    <div>
+                        <label for="objetoVagas">Vagas de Garagem:</label>
+                        <input type="number" id="objetoVagas" min="0" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparáveis -->
+            <div class="section">
+                <h2>2. Imóveis Comparáveis</h2>
+                <div id="comparaveis">
+                    <div class="comparavel" data-comp="1">
+                        <h3>Comparável 1</h3>
+                        <div class="form-grid">
+                            <div>
+                                <label>Endereço:</label>
+                                <input type="text" data-comp="1" data-field="endereco" required>
+                            </div>
+                            <div>
+                                <label>Área (m²):</label>
+                                <input type="number" step="0.01" min="0" data-comp="1" data-field="area" required>
+                            </div>
+                            <div>
+                                <label>Preço de Venda (R$):</label>
+                                <input type="number" step="0.01" min="0" data-comp="1" data-field="preco" required>
+                            </div>
+                            <div>
+                                <label>Ajuste Localização (%):</label>
+                                <input type="number" step="0.01" data-comp="1" data-field="ajusteLoc" value="0">
+                            </div>
+                            <div>
+                                <label>Ajuste Área (%):</label>
+                                <input type="number" step="0.01" data-comp="1" data-field="ajusteArea" value="0">
+                            </div>
+                            <div>
+                                <label>Ajuste Tempo (%):</label>
+                                <input type="number" step="0.01" data-comp="1" data-field="ajusteTempo" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repetir para 2 e 3 similarmente -->
+                    <div class="comparavel" data-comp="2">
+                        <h3>Comparável 2</h3>
+                        <div class="form-grid">
+                            <div><label>Endereço:</label><input type="text" data-comp="2" data-field="endereco" required></div>
+                            <div><label>Área (m²):</label><input type="number" step="0.01" min="0" data-comp="2" data-field="area" required></div>
+                            <div><label>Preço de Venda (R$):</label><input type="number" step="0.01" min="0" data-comp="2" data-field="preco" required></div>
+                            <div><label>Ajuste Localização (%):</label><input type="number" step="0.01" data-comp="2" data-field="ajusteLoc" value="0"></div>
+                            <div><label>Ajuste Área (%):</label><input type="number" step="0.01" data-comp="2" data-field="ajusteArea" value="0"></div>
+                            <div><label>Ajuste Tempo (%):</label><input type="number" step="0.01" data-comp="2" data-field="ajusteTempo" value="0"></div>
+                        </div>
+                    </div>
+                    <div class="comparavel" data-comp="3">
+                        <h3>Comparável 3</h3>
+                        <div class="form-grid">
+                            <div><label>Endereço:</label><input type="text" data-comp="3" data-field="endereco" required></div>
+                            <div><label>Área (m²):</label><input type="number" step="0.01" min="0" data-comp="3" data-field="area" required></div>
+                            <div><label>Preço de Venda (R$):</label><input type="number" step="0.01" min="0" data-comp="3" data-field="preco" required></div>
+                            <div><label>Ajuste Localização (%):</label><input type="number" step="0.01" data-comp="3" data-field="ajusteLoc" value="0"></div>
+                            <div><label>Ajuste Área (%):</label><input type="number" step="0.01" data-comp="3" data-field="ajusteArea" value="0"></div>
+                            <div><label>Ajuste Tempo (%):</label><input type="number" step="0.01" data-comp="3" data-field="ajusteTempo" value="0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" id="salvar">Salvar Dados</button>
+                <button type="button" id="carregar">Carregar Dados</button>
+                <button type="button" id="gerarPDF">Gerar PDF</button>
+                <button type="submit" id="enviar">Enviar para Webhook</button>
+                <button type="button" id="limpar">Limpar Tudo</button>
+            </div>
         </form>
-    </div>
 
-    <div class="container hidden" id="mainContainer">
-        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <a href="#" id="incluirCustoBtn" class="button">Incluir Custo</a>
-        <a href="#" id="diarioObraBtn" class="button">Diário de Obra</a>
-        <a href="#" class="button">Acompanhe a Obra</a>
-        <a href="#" class="button">Pagamentos</a>
-        <a href="#" id="previsaoTempoBtn" class="button">Previsão do Tempo</a>
-    </div>
-
-    <div class="container hidden" id="incluirCustoContainer">
-        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <form id="costForm">
-            <select id="obra" class="select" required>
-                <option value="" disabled selected>Selecione a Obra</option>
-                <!-- As opções serão populadas dinamicamente pelo JavaScript -->
-            </select>
-            <input type="text" id="fornecedor" class="input" placeholder="Fornecedor" required>
-            <input type="text" id="item" class="input" placeholder="Item" required>
-            <input type="number" id="valor" class="input" placeholder="Valor" required>
-            <button type="submit" class="button">Enviar</button>
-        </form>
-        <button id="voltarBtnCusto" class="button small-button">Voltar</button>
-    </div>
-
-    <div class="container hidden" id="previsaoTempoContainer">
-        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <div id="cont_d713deb4f33e0a60a4537a731d9dcb0a" style="margin-top: 20px;">
-            <script type="text/javascript" async src="https://www.tempo.com/wid_loader/d713deb4f33e0a60a4537a731d9dcb0a"></script>
+        <div id="report" class="section report">
+            <h2>Relatório Gerado</h2>
+            <div id="reportContent"></div>
         </div>
-        <button id="voltarBtnTempo" class="button small-button">Voltar</button>
-    </div>
-
-    <div class="container hidden" id="diarioObraContainer">
-        <img src="https://fabiogrisard.github.io/exata/logo2.bmp" alt="Logotipo Exata Construções" class="logo">
-        <form id="diarioObraForm">
-            <select id="obraDiario" class="select" required>
-                <option value="" disabled selected>Selecione a Obra</option>
-                <!-- As opções serão populadas dinamicamente pelo JavaScript -->
-            </select>
-            <div class="textarea-container">
-                <textarea id="faseComentarios" class="textarea" placeholder="Fase da Obra/Comentários" required></textarea>
-                <button type="button" id="audioBtnComentarios" class="audio-button"><img src="https://img.icons8.com/ios-filled/50/000000/microphone.png" alt="Microfone"></button>
-            </div>
-            <div class="textarea-container">
-                <textarea id="itensCompra" class="textarea" placeholder="Itens a Serem Comprados"></textarea>
-                <button type="button" id="audioBtnItens" class="audio-button"><img src="https://img.icons8.com/ios-filled/50/000000/microphone.png" alt="Microfone"></button>
-            </div>
-            <input type="file" id="foto1" class="input" accept="image/*" capture="camera">
-            <input type="file" id="foto2" class="input" accept="image/*" capture="camera">
-            <input type="file" id="foto3" class="input" accept="image/*" capture="camera">
-            <input type="file" id="foto4" class="input" accept="image/*" capture="camera">
-            <button type="submit" class="button">Enviar</button>
-        </form>
-        <button id="voltarBtnDiario" class="button small-button">Voltar</button>
     </div>
 
     <script>
-        // --- INÍCIO DA ÁREA DE CONFIGURAÇÕES CENTRALIZADAS ---
-        // Aqui você pode facilmente adicionar, remover ou editar projetos.
-        // Cada objeto representa uma obra/projeto e contém IDs importantes.
-        const projectConfigurations = [
-            {
-                id: 'apartamento', // ID único para referência interna
-                name: 'Apartamento Patricia', // Nome amigável que aparece na lista
-                sheetsId: '1BMf99cthQ0jaIz2rrMFt6tAzA4PtqDNcQPaA9-XAa2o', // ID da planilha Google Sheets para registro de custos
-                driveFolderId: '1vfQuGe4ukcloG9LxiL49ck31ajWjQbcO', // ID da pasta do Google Drive para upload de fotos/documentos gerais
-                dailyLogDriveFolderId: '1vfQuGe4ukcloG9LxiL49ck31ajWjQbcO' // ID da pasta do Google Drive específica para o diário de obra (pode ser o mesmo que driveFolderId ou diferente)
-            },
-            {
-                id: 'Felipe',
-                name: 'Casa Felipe',
-                sheetsId: '1CAmCSd-HMW6jYm8wABK020QpcNulfcXb_WfgkW6GdSs', // 
-                driveFolderId: '1NcysZ5BxYm-8OmsBbI9izTuhSnlTNhHe', // 
-                dailyLogDriveFolderId: '1NcysZ5BxYm-8OmsBbI9izTuhSnlTNhHe' // 
-            }
-            // Para adicionar um novo projeto (ex: Casa do Felipe):
-            // Basta adicionar um novo objeto abaixo, seguindo o mesmo formato.
-            // {
-            //     id: 'casa_felipe', // Use um ID único e fácil de identificar
-            //     name: 'Casa do Felipe', // Nome que aparecerá nas listas suspensas
-            //     sheetsId: 'ID_DA_PLANILHA_GOOGLESHEETS_DA_CASA_DO_FELIPE',
-            //     driveFolderId: 'ID_DA_PASTA_DRIVE_GERAL_DA_CASA_DO_FELIPE',
-            //     dailyLogDriveFolderId: 'ID_DA_PASTA_DRIVE_DIARIO_DA_CASA_DO_FELIPE' // Se for uma pasta diferente para o diário
-            // }
-        ];
-        // --- FIM DA ÁREA DE CONFIGURAÇÕES CENTRALIZADAS ---
+        const WEBHOOK_URL = 'https://bleatingfrilledlizard-n8n.cloudfy.live/webhook-test/mcddm';
 
-
-        const correctUsername = 'fabiogrisard';
-        const correctPassword = 'coxa1320';
-
-        const loginContainer = document.getElementById('loginContainer');
-        const mainContainer = document.getElementById('mainContainer');
-        const incluirCustoContainer = document.getElementById('incluirCustoContainer');
-        const previsaoTempoContainer = document.getElementById('previsaoTempoContainer');
-        const diarioObraContainer = document.getElementById('diarioObraContainer');
-        // Referências diretas aos elementos select para facilitar o uso na função populate
-        const selectObra = document.getElementById('obra');
-        const selectObraDiario = document.getElementById('obraDiario');
-
-        // Função para popular as listas suspensas de obras
-        function populateProjectSelects() {
-            // Limpa as opções existentes, mantendo a opção "Selecione a Obra" (índice 0)
-            // Percorre de trás para frente para evitar problemas com o índice ao remover
-            for (let i = selectObra.options.length - 1; i > 0; i--) {
-                selectObra.remove(i);
-            }
-            for (let i = selectObraDiario.options.length - 1; i > 0; i--) {
-                selectObraDiario.remove(i);
-            }
-
-            projectConfigurations.forEach(project => {
-                const optionCusto = document.createElement('option');
-                optionCusto.value = project.id; // Usa o ID para o valor da opção
-                optionCusto.textContent = project.name; // Usa o nome amigável para o texto
-                selectObra.appendChild(optionCusto);
-
-                const optionDiario = document.createElement('option');
-                optionDiario.value = project.id;
-                optionDiario.textContent = project.name;
-                selectObraDiario.appendChild(optionDiario);
-            });
+        // Audio beep
+        function playBeep() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
         }
 
-        // Chama a função para popular as listas quando o script é carregado
-        populateProjectSelects();
-
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (username === correctUsername && password === correctPassword) {
-                alert('Login realizado com sucesso!');
-                loginContainer.classList.add('hidden');
-                mainContainer.classList.remove('hidden');
-            } else {
-                alert('Usuário ou senha incorretos.');
-            }
-        });
-
-        document.getElementById('incluirCustoBtn').addEventListener('click', function() {
-            mainContainer.classList.add('hidden');
-            incluirCustoContainer.classList.remove('hidden');
-        });
-
-        document.getElementById('diarioObraBtn').addEventListener('click', function() {
-            mainContainer.classList.add('hidden');
-            diarioObraContainer.classList.remove('hidden');
-        });
-
-        document.getElementById('previsaoTempoBtn').addEventListener('click', function() {
-            mainContainer.classList.add('hidden');
-            previsaoTempoContainer.classList.remove('hidden');
-        });
-
-        document.getElementById('voltarBtnCusto').addEventListener('click', function() {
-            incluirCustoContainer.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
-        });
-
-        document.getElementById('voltarBtnTempo').addEventListener('click', function() {
-            previsaoTempoContainer.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
-        });
-
-        document.getElementById('voltarBtnDiario').addEventListener('click', function() {
-            diarioObraContainer.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
-        });
-
-        document.getElementById('costForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const selectedObraId = selectObra.value;
-            // Encontra a configuração do projeto selecionado
-            const selectedProject = projectConfigurations.find(p => p.id === selectedObraId);
-
-            if (!selectedProject) {
-                alert('Por favor, selecione uma obra válida.');
-                return;
-            }
-
-            const fornecedor = document.getElementById('fornecedor').value;
-            const item = document.getElementById('item').value;
-            const valor = document.getElementById('valor').value;
-            const data = new Date().toISOString().split('T')[0];
-            const pagador = 'Fabio';
-
-            const dataToSend = {
-                obra: selectedProject.name, // Envia o nome amigável da obra
-                fornecedor,
-                item,
-                valor,
-                data,
-                pagador,
-                planilha: selectedProject.sheetsId, // Pega o ID da planilha da configuração
-                pasta: selectedProject.driveFolderId // Pega o ID da pasta do Drive da configuração
-            };
-
-            fetch('https://prehistoriclobster-n8n.cloudfy.live/webhook/valores', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+        // Salvar em localStorage
+        function salvarDados() {
+            const formData = {
+                objeto: {
+                    endereco: document.getElementById('objetoEndereco').value,
+                    area: document.getElementById('objetoArea').value,
+                    quartos: document.getElementById('objetoQuartos').value,
+                    vagas: document.getElementById('objetoVagas').value
                 },
-                body: JSON.stringify(dataToSend)
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Dados enviados com sucesso!');
-                    document.getElementById('costForm').reset();
-                } else {
-                    alert('Falha ao enviar os dados.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro ao enviar os dados.');
-            });
-        });
-
-        document.getElementById('diarioObraForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const selectedObraDiarioId = selectObraDiario.value;
-            // Encontra a configuração do projeto selecionado para o diário de obra
-            const selectedProject = projectConfigurations.find(p => p.id === selectedObraDiarioId);
-
-            if (!selectedProject) {
-                alert('Por favor, selecione uma obra válida.');
-                return;
-            }
-
-            const faseComentarios = document.getElementById('faseComentarios').value;
-            const itensCompra = document.getElementById('itensCompra').value;
-            const foto1 = document.getElementById('foto1').files[0];
-            const foto2 = document.getElementById('foto2').files[0];
-            const foto3 = document.getElementById('foto3').files[0];
-            const foto4 = document.getElementById('foto4').files[0];
-
-            if (!selectedObraDiarioId || !faseComentarios || (!foto1 && !foto2 && !foto3 && !foto4)) {
-                alert('Por favor, selecione a obra, preencha a fase/comentários e adicione pelo menos uma foto.');
-                return;
-            }
-
-            const formData = new FormData();
-            const data = new Date().toISOString().split('T')[0];
-
-            formData.append('data', data);
-            formData.append('obra', selectedProject.name); // Envia o nome amigável da obra
-            formData.append('faseComentarios', faseComentarios);
-            formData.append('itensCompra', itensCompra);
-            formData.append('pastaDiario', selectedProject.dailyLogDriveFolderId); // Pega o ID da pasta de diário da configuração
-            formData.append('planilha', selectedProject.sheetsId); // Pega o ID da planilha da configuração
-            formData.append('pasta', selectedProject.driveFolderId); // Pega o ID da pasta do Drive da configuração
-
-            // Função para renomear fotos
-            function renameFile(file, newName) {
-                return new File([file], newName, { type: file.type });
-            }
-
-            if (foto1) formData.append('foto1', renameFile(foto1, `${data}_01.${foto1.name.split('.').pop()}`));
-            if (foto2) formData.append('foto2', renameFile(foto2, `${data}_02.${foto2.name.split('.').pop()}`));
-            if (foto3) formData.append('foto3', renameFile(foto3, `${data}_03.${foto3.name.split('.').pop()}`));
-            if (foto4) formData.append('foto4', renameFile(foto4, `${data}_04.${foto4.name.split('.').pop()}`));
-
-            fetch('https://prehistoriclobster-n8n.cloudfy.live/webhook/diario_obra', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Dados enviados com sucesso!');
-                    document.getElementById('diarioObraForm').reset();
-                } else {
-                    alert('Falha ao enviar os dados.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro ao enviar os dados.');
-            });
-        });
-
-        // Função para leitura de áudio usando a API Web Speech
-        function startRecognition(targetElementId) {
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = 'pt-BR';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-
-            recognition.onresult = function(event) {
-                const transcript = event.results[0][0].transcript;
-                document.getElementById(targetElementId).value += transcript + '\n';
+                comparaveis: {}
             };
-
-            recognition.onerror = function(event) {
-                console.error('Erro no reconhecimento de fala:', event.error);
-                alert('Erro ao reconhecer o áudio: ' + event.error);
-            };
-
-            recognition.start();
+            for (let i = 1; i <= 3; i++) {
+                formData.comparaveis[i] = {
+                    endereco: document.querySelector(`[data-comp='${i}'][data-field='endereco']`).value,
+                    area: document.querySelector(`[data-comp='${i}'][data-field='area']`).value,
+                    preco: document.querySelector(`[data-comp='${i}'][data-field='preco']`).value,
+                    ajusteLoc: document.querySelector(`[data-comp='${i}'][data-field='ajusteLoc']`).value,
+                    ajusteArea: document.querySelector(`[data-comp='${i}'][data-field='ajusteArea']`).value,
+                    ajusteTempo: document.querySelector(`[data-comp='${i}'][data-field='ajusteTempo']`).value
+                };
+            }
+            localStorage.setItem('mcddmData', JSON.stringify(formData));
+            playBeep();
+            alert('Dados salvos!');
         }
 
-        document.getElementById('audioBtnComentarios').addEventListener('click', function() {
-            startRecognition('faseComentarios');
-        });
-
-        document.getElementById('audioBtnItens').addEventListener('click', function() {
-            startRecognition('itensCompra');
-        });
-
-        // Salvar e recuperar o nome de usuário
-        const usernameInput = document.getElementById('username');
-
-        // Carregar o nome de usuário salvo
-        if (localStorage.getItem('username')) {
-            usernameInput.value = localStorage.getItem('username');
+        // Carregar de localStorage
+        function carregarDados() {
+            const saved = localStorage.getItem('mcddmData');
+            if (saved) {
+                const formData = JSON.parse(saved);
+                document.getElementById('objetoEndereco').value = formData.objeto.endereco || '';
+                document.getElementById('objetoArea').value = formData.objeto.area || '';
+                document.getElementById('objetoQuartos').value = formData.objeto.quartos || '';
+                document.getElementById('objetoVagas').value = formData.objeto.vagas || '';
+                for (let i = 1; i <= 3; i++) {
+                    const comp = formData.comparaveis[i];
+                    if (comp) {
+                        document.querySelector(`[data-comp='${i}'][data-field='endereco']`).value = comp.endereco || '';
+                        document.querySelector(`[data-comp='${i}'][data-field='area']`).value = comp.area || '';
+                        document.querySelector(`[data-comp='${i}'][data-field='preco']`).value = comp.preco || '';
+                        document.querySelector(`[data-comp='${i}'][data-field='ajusteLoc']`).value = comp.ajusteLoc || '0';
+                        document.querySelector(`[data-comp='${i}'][data-field='ajusteArea']`).value = comp.ajusteArea || '0';
+                        document.querySelector(`[data-comp='${i}'][data-field='ajusteTempo']`).value = comp.ajusteTempo || '0';
+                    }
+                }
+                playBeep();
+                alert('Dados carregados!');
+            } else {
+                alert('Nenhum dado salvo.');
+            }
         }
 
-        // Salvar o nome de usuário ao enviar o formulário
-        document.getElementById('loginForm').addEventListener('submit', function() {
-            localStorage.setItem('username', usernameInput.value);
-        });
+        // Limpar
+        function limparTudo() {
+            if (confirm('Tem certeza que deseja limpar todos os dados?')) {
+                document.getElementById('mcddmForm').reset();
+                localStorage.removeItem('mcddmData');
+                playBeep();
+            }
+        }
 
-        // --- INÍCIO DO CÓDIGO PWA (REGISTRO DO SERVICE WORKER) ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/exata/service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registrado com sucesso:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.error('Falha no registro do Service Worker:', error);
-                    });
+        // Validação
+        function validarForm() {
+            const required = document.querySelectorAll('[required]');
+            for (let input of required) {
+                if (!input.value.trim()) {
+                    alert('Preencha todos os campos obrigatórios!');
+                    input.focus();
+                    return false;
+                }
+            }
+            // Verificar números
+            const nums = document.querySelectorAll('input[type=number]');
+            for (let num of nums) {
+                if (num.value && (isNaN(num.value) || parseFloat(num.value) < 0)) {
+                    alert('Valores numéricos inválidos!');
+                    num.focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Gerar relatório e PDF
+        async function gerarPDF() {
+            if (!validarForm()) return;
+
+            const data = coletarDados();
+            let reportHtml = `
+                <h2>Laudo - MCDDM</h2>
+                <p><strong>Imóvel Objeto:</strong> ${data.objeto.endereco}, Área: ${data.objeto.area} m²</p>
+            `;
+            let precosAjustados = [];
+            for (let i = 1; i <= 3; i++) {
+                const comp = data.comparaveis[i];
+                const precoBase = parseFloat(comp.preco);
+                const fatorLoc = 1 + (parseFloat(comp.ajusteLoc) / 100);
+                const fatorArea = 1 + (parseFloat(comp.ajusteArea) / 100);
+                const fatorTempo = 1 + (parseFloat(comp.ajusteTempo) / 100);
+                const precoAjustado = precoBase * fatorLoc * fatorArea * fatorTempo;
+                precosAjustados.push(precoAjustado);
+                const precoM2 = (precoAjustado / parseFloat(comp.area)).toFixed(2);
+                reportHtml += `
+                    <p><strong>Comparável ${i}:</strong> ${comp.endereco}, Área: ${comp.area} m², Preço Ajustado: R$ ${precoAjustado.toLocaleString()}, R$/m²: ${precoM2}</p>
+                `;
+            }
+            const media = precosAjustados.reduce((a, b) => a + b, 0) / 3;
+            const valorObjeto = (media / parseFloat(data.objeto.area)).toFixed(2);
+            reportHtml += `
+                <p><strong>Média Preços Ajustados:</strong> R$ ${media.toLocaleString()}</p>
+                <p><strong>Valor Estimado do Objeto (R$/m²):</strong> R$ ${valorObjeto}</p>
+            `;
+
+            document.getElementById('reportContent').innerHTML = reportHtml;
+            document.getElementById('report').style.display = 'block';
+
+            // PDF
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            const element = document.getElementById('report');
+            await html2canvas(element).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 10, 10, 190, 277);
+                pdf.save('laudo_mcddm.pdf');
             });
+            playBeep();
         }
-        // --- FIM DO CÓDIGO PWA ---
+
+        // Coletar dados
+        function coletarDados() {
+            const data = {
+                objeto: {
+                    endereco: document.getElementById('objetoEndereco').value,
+                    area: document.getElementById('objetoArea').value,
+                    quartos: document.getElementById('objetoQuartos').value,
+                    vagas: document.getElementById('objetoVagas').value
+                },
+                comparaveis: {}
+            };
+            for (let i = 1; i <= 3; i++) {
+                data.comparaveis[i] = {
+                    endereco: document.querySelector(`[data-comp='${i}'][data-field='endereco']`).value,
+                    area: document.querySelector(`[data-comp='${i}'][data-field='area']`).value,
+                    preco: document.querySelector(`[data-comp='${i}'][data-field='preco']`).value,
+                    ajusteLoc: document.querySelector(`[data-comp='${i}'][data-field='ajusteLoc']`).value,
+                    ajusteArea: document.querySelector(`[data-comp='${i}'][data-field='ajusteArea']`).value,
+                    ajusteTempo: document.querySelector(`[data-comp='${i}'][data-field='ajusteTempo']`).value
+                };
+            }
+            return data;
+        }
+
+        // Enviar webhook
+        async function enviarWebhook() {
+            if (!validarForm()) return;
+
+            const data = coletarDados();
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    playBeep();
+                    alert('Dados enviados com sucesso!');
+                } else {
+                    alert('Erro ao enviar: ' + response.status);
+                }
+            } catch (error) {
+                alert('Erro de rede: ' + error.message);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('salvar').addEventListener('click', salvarDados);
+        document.getElementById('carregar').addEventListener('click', carregarDados);
+        document.getElementById('limpar').addEventListener('click', limparTudo);
+        document.getElementById('gerarPDF').addEventListener('click', gerarPDF);
+        document.getElementById('mcddmForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            enviarWebhook();
+        });
+
+        // Auto-save on change
+        document.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('change', salvarDados);
+        });
+
+        // Load on start
+        window.addEventListener('load', carregarDados);
     </script>
 </body>
 </html>
